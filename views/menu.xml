@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Parent Menu -->
+    <menuitem
+        id="menu_scraper_root"
+        name="Store Scraper"
+        groups="group_enable_scraper_menu"
+        sequence="10"/>
+
+        <menuitem
+            id="menu_scraped_store_data"
+            name="Scraped Store Data"
+            parent="menu_scraper_root"
+            sequence="10"/>
+
+            <menuitem
+                id="menu_sub_scraped_store_data"
+                name="Competitor Store Data"
+                parent="menu_scraped_store_data"
+                action="action_scraped_store_data"
+                sequence="10"/>
+
+            <menuitem
+                id="menu_sub_scraped_store_data_line"
+                name="Competitor Store Data Lines"
+                parent="menu_scraped_store_data"
+                action="action_scraped_store_data_line"
+                sequence="20"/>
+
+        <menuitem
+            id="menu_scraper_log"
+            name="Scraper Logs"
+            parent="menu_scraper_root"
+            action="action_scraper_log"
+            sequence="20"/>
+
+        <menuitem 
+            id="menu_scraper_request"
+            name="Scraper Requests"
+            parent="menu_scraper_root"
+            action="action_scraper_request"
+            sequence="30"/>
+
+        <menuitem
+            id="menu_scrapper_configuration"
+            name="Configuration"
+            parent="menu_scraper_root"
+            sequence="40"/>
+
+            <menuitem
+                id="menu_scraper_store"
+                name="Competitor Store"
+                parent="menu_scrapper_configuration"
+                action="action_scraper_store"
+                sequence="10"/>
+
+            <menuitem
+                id="menu_scraper_field_mapping"
+                name="Competitor Data Mapping"
+                parent="menu_scrapper_configuration"
+                action="action_scraper_field_mapping"
+                sequence="20"/>
+
+            <menuitem
+                id="menu_store_town"
+                name="Competitor Store Address"
+                parent="menu_scrapper_configuration"
+                action="action_store_town"
+                sequence="30"/>
+
+            <menuitem id="menu_store_district" 
+                name="Districts" 
+                parent="menu_scrapper_configuration" 
+                action="action_store_district" 
+                sequence="40"/>
+
+            <menuitem id="menu_towns" 
+                name="Towns" 
+                parent="menu_scrapper_configuration" 
+                action="action_towns" 
+                sequence="42"/>
+
+            <menuitem
+                id="menu_store_town_mapping"
+                name="Company–Competitor Town Mappings"
+                parent="menu_scrapper_configuration"
+                action="action_store_town_mapping"
+                sequence="50"/>
+
+
+
+            <menuitem
+                id="menu_error_email_config"
+                name="Email Configurations"
+                parent="menu_scrapper_configuration"
+                action="action_error_mail_config"
+                sequence="60"/>
+            
+            <menuitem id="menu_import_address"
+              name="Import Address"
+              parent="menu_scrapper_configuration"
+              action="action_import_address_wizard"
+              sequence="70"/>
+
+</odoo>

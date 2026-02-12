@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="scraper_store_demo_5" model="scraper.store">
+        <field name="name">lagerbox</field>
+        <field name="url">https://www.lagerbox.com/en/about</field>
+        <field name="domain">5</field>
+        <field name="active">True</field>
+        <field name="data_type">scrapy</field>
+    </record>
+
+     <record id="scraper_field_mapping_demo_5" model="scraper.field.mapping">
+        <field name="scraper_store_id" ref="scraper_store_demo_5"/>
+        <field name="store_url">https://www.yourstorebox.com/en/location-details</field>
+        <field name="store_plan">month</field>
+
+        <field name="price_calulate_python_code"><![CDATA[
+value_size = str(value_size).lower()
+value_size = value_size.replace("m²", "").replace("m2", "").replace("m3", "")
+value_size = value_size.replace(",", ".").strip()
+value_size = float(value_size)
+per_meter_value = 0
+if value_size and value_price :
+    if value_size <= 1:          
+          per_meter_value  = value_price
+    else:
+           per_meter_value = round(value_price / float(value_size), 2)
+
+if isinstance(bab_product, str) and bab_product :
+    cleaned = ''
+    decimal_found = False
+
+    for ch in bab_product:
+        if ch.isdigit():
+            cleaned += ch
+        elif ch == ',' and not decimal_found:
+            cleaned += '.'   # convert comma to decimal point
+            decimal_found = True
+        elif ch == '.' and not decimal_found:
+            cleaned += '.'
+            decimal_found = True
+        elif cleaned:
+            break  # stop once number part ends
+ 
+    if cleaned:
+        try:
+            bab_price = float(cleaned)
+            if per_meter_value and value_size != bab_price:           
+                    result =  round( bab_price * per_meter_value,2)
+            else:
+                result = value_price
+        except ValueError:
+            result = 0
+    else:
+        result = 0
+
+else:
+    result = 0
+        ]]></field>
+
+    <field name="plan_price_calulate_python_code">
+<![CDATA[
+if timeframe == 'flexible monthly'  and pricing:
+     per_day_price = round( (  (pricing * 12)/365) , 2)
+     weekly_price = per_day_price* 7
+     result = weekly_price * 4
+else:
+   result = 0
+]]>
+        </field>
+
+        <field name="store_rent_plan_python_code"><![CDATA[
+per_day_amount = 0
+
+if plan == 'month':
+    per_day_amount = round( ((price * 12) / 365),2)
+ 
+elif plan == 'week':
+    per_day_amount = round(  ((price * 52) / 365), 2)
+]]>
+        </field>
+    </record>
+
+
+    <record id="field_mapping_line_demo_33" model="field.mapping.lines">
+        <field name="scraper_field_mapping_id" ref="scraper_field_mapping_demo_5"/>
+        <field name="json_key">rent,Price</field>
+        <field name="target_field_id"
+           ref="bsi_competitor_scraper.field_scraped_store_data_line__competitor_price"/>
+        <field name="python_code">
+<![CDATA[
+cleaned = "".join(c for c in value if c.isdigit() or c == ".")
+result = float(cleaned) ]]>
+        </field>
+    </record>
+
+    <record id="field_mapping_line_demo_34" model="field.mapping.lines">
+        <field name="scraper_field_mapping_id" ref="scraper_field_mapping_demo_5"/>
+        <field name="json_key">insurance_price</field>
+        <field name="target_field_id"
+           ref="bsi_competitor_scraper.field_scraped_store_data_line__insurance"/>
+
+        <field name="python_code">
+<![CDATA[
+if isinstance(value, (int, float)):
+    result = float(value)
+
+elif isinstance(value, str):
+    cleaned = ''
+    decimal_found = False
+
+    for ch in value:
+        if ch.isdigit():
+            cleaned += ch
+        elif ch == ',' and not decimal_found:
+            cleaned += '.'   # convert comma to decimal point
+            decimal_found = True
+        elif ch == '.' and not decimal_found:
+            cleaned += '.'
+            decimal_found = True
+        elif cleaned:
+            break  # stop once number part ends
+
+    if cleaned:
+        try:
+            result = float(cleaned)
+        except ValueError:
+            result = value
+    else:
+        result = value
+
+else:
+    result = value
+        ]]></field>
+    </record>
+
+    <record id="field_mapping_line_demo_35" model="field.mapping.lines">
+        <field name="scraper_field_mapping_id" ref="scraper_field_mapping_demo_5"/>
+        <field name="json_key">unit_size</field>
+        <field name="target_field_id"
+           ref="bsi_competitor_scraper.field_scraped_store_data_line__competitor_product"/>
+    </record>
+
+    <record id="field_mapping_line_demo_36" model="field.mapping.lines">
+        <field name="scraper_field_mapping_id" ref="scraper_field_mapping_demo_5"/>
+        <field name="json_key">unit_size_category</field>
+        <field name="target_field_id"
+           ref="bsi_competitor_scraper.field_scraped_store_data_line__product_category"/>
+    </record>
+
+     <record id="field_mapping_line_demo_37" model="field.mapping.lines">
+        <field name="scraper_field_mapping_id" ref="scraper_field_mapping_demo_5"/>
+        <field name="json_key">discount</field>
+        <field name="target_field_id"
+           ref="bsi_competitor_scraper.field_scraped_store_data_line__discounted_per_day_amount"/>
+        <field name="python_code">
+<![CDATA[          
+if isinstance(value, (int, float)):
+    result = float(value)
+
+elif isinstance(value, str):
+    cleaned = ''
+    decimal_found = False
+
+    for ch in value:
+        if ch.isdigit():
+            cleaned += ch
+        elif ch == ',' and not decimal_found:
+            cleaned += '.'   # convert comma to decimal point
+            decimal_found = True
+        elif ch == '.' and not decimal_found:
+            cleaned += '.'
+            decimal_found = True
+        elif cleaned:
+            break  # stop once number part ends
+
+    if cleaned:
+        try:
+            result = float(cleaned)
+        except ValueError:
+            result = value
+    else:
+        result = value
+
+else:
+    result = value ]]>       
+        </field>
+    </record>
+
+    <record id="field_mapping_line_demo_38" model="field.mapping.lines">
+        <field name="scraper_field_mapping_id" ref="scraper_field_mapping_demo_5"/>
+        <field name="json_key">location</field>
+        <field name="target_field_id"
+           ref="bsi_competitor_scraper.field_scraped_store_data_line__store_location_id"/>
+    </record>
+    
+    <record id="field_mapping_line_demo_39" model="field.mapping.lines">
+        <field name="scraper_field_mapping_id" ref="scraper_field_mapping_demo_5"/>
+        <field name="json_key">updated_at</field>
+        <field name="target_field_id"
+           ref="bsi_competitor_scraper.field_scraped_store_data_line__timestamp"/>
+        <field name="python_code"><![CDATA[result = value.split("T")[0]]]></field>
+    </record>
+
+
+    <record id="field_mapping_line_demo_40" model="field.mapping.lines">
+        <field name="scraper_field_mapping_id" ref="scraper_field_mapping_demo_5"/>
+        <field name="json_key">id</field>
+        <field name="target_field_id"
+           ref="bsi_competitor_scraper.field_scraped_store_data_line__scrappy_id"/>
+    </record>
+
+     <record id="field_mapping_line_demo_41" model="field.mapping.lines">
+        <field name="scraper_field_mapping_id" ref="scraper_field_mapping_demo_5"/>
+        <field name="json_key">period</field>
+        <field name="target_field_id"
+           ref="bsi_competitor_scraper.field_scraped_store_data_line__plan"/>
+    </record>
+     <record id="field_mapping_line_demo_42" model="field.mapping.lines">
+        <field name="scraper_field_mapping_id" ref="scraper_field_mapping_demo_5"/>
+        <field name="json_key">rental_label</field>
+        <field name="target_field_id"
+           ref="bsi_competitor_scraper.field_scraped_store_data_line__timeframe"/>
+    </record>
+  
+
+   <!--  <record id="subscription_plan_mapping_line_demo_1" model="subscription.plan.mapping.lines">
+        <field name="scraper_field_mapping_id" ref="scraper_field_mapping_demo_5"/>
+        <field name="json_uom_key">6 months</field>
+        <field name="subscription_plan_id" ref="subscription_plan_demo_monthly"/>
+        <field name="no_auto_update">False</field>
+    </record>
+
+     <record id="subscription_plan_mapping_line_demo_2" model="subscription.plan.mapping.lines">
+        <field name="scraper_field_mapping_id" ref="scraper_field_mapping_demo_5"/>
+        <field name="json_uom_key">12 months</field>
+        <field name="subscription_plan_id" ref="subscription_plan_demo_monthly"/>
+        <field name="no_auto_update">False</field>
+    </record> -->
+  </odoo>

@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_scraper_field_mapping_tree" model="ir.ui.view">
+        <field name="name">scraper.field.mapping.tree</field>
+        <field name="model">scraper.field.mapping</field>
+        <field name="arch" type="xml">
+            <tree string="Competitor Data Mapping">
+                <field name="scraper_store_id"/>
+                <field name="store_url"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_scraper_field_mapping_form" model="ir.ui.view">
+        <field name="name">scraper.field.mapping.form</field>
+        <field name="model">scraper.field.mapping</field>
+        <field name="arch" type="xml">
+            <form string="Competitor Data Mapping">
+                <sheet>
+                    <group>
+                        <field name="scraper_store_id"/>
+                        <field name="store_url"/>
+                    </group>
+
+                    <notebook>
+                        <page string="Field Mapping">
+                            <div class="text-muted">
+                                <strong>JSON keys from the scraped data are mapped to corresponding Odoo store data fields.</strong><br/>
+                                Example: data_price → Selling Price
+                            </div><br/>
+                            
+                            <field name="field_mapping_ids">
+                                <tree editable="bottom">
+                                    <field name="json_key"/>
+                                    <field name="target_field_id"/>
+                                    <field name="python_code" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Product Mapping" invisible="1">
+                                <div>
+                                    <button name="variant_run_simplified_pro_name" 
+                                    string=" 1 Variant Simplified Name" 
+                                    type="object" 
+                                    class="oe_highlight"/>
+                                    <button name="lines_run_json_product_key_simplified_pro_name" 
+                                    string=" 2 Line Json Simplified Name" 
+                                    type="object" 
+                                    class="oe_highlight"/>
+                                    <button name="auto_fetch_related_products" 
+                                    string=" 3 Auto fetch related products" 
+                                    type="object" 
+                                    class="oe_highlight"/>
+                                    <br/><button name="run_all_product_mapping_lines_process" 
+                                    string="All Process" 
+                                    type="object" 
+                                    class="oe_highlight"/>
+                                </div>
+
+                                <br/><div class="text-muted">
+                                    <strong>Tested Json Product Key:</strong>
+                                    2,6m2=2.6, 2.3 m²=2.3, 2m2=2.2,8m2.5=8.0 <br/>
+                                    <strong>Tested Auto Map Products:</strong>
+                                    1.4=1.5, 2.1=2.0, 2.5=3.0, 2.9=3.0
+                                </div><br/>
+
+                                <field name="product_mapping_ids">
+                                    <tree editable="bottom">
+                                        <field name="json_product_key"/>
+                                        <field name="simplified_pro_name"/>
+                                        <field name="product_id"/>                                
+                                        <field name="no_auto_update"/>
+                                    </tree>
+                                </field>
+                        </page>
+                        <page string="Subscription Plan Mapping">
+                            <div class="text-muted">
+                                <strong>Map subscription plans received from scraped data to corresponding Odoo subscription plans.</strong><br/>
+                                Example: 6 months → Abo 6 Months
+                            </div><br/>
+                            <field name="subscription_plan_mapping_ids">
+                                <tree editable="bottom">
+                                    <field name="json_uom_key"/>
+                                    <field name="subscription_plan_id"/>
+                                    <field name="no_auto_update"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Price Calculate Python Code">
+                            <div class="text-muted">
+                                <strong>Calculates average price using scraped m² data and mapped internal pricing.</strong><br/>
+                                Example: Scraped size 10 m², scraped price €500 → €50 per m²; mapped product price €8.00 → final calculated price €400.
+                            </div><br/>
+                            <field name="price_calulate_python_code" widget="text" />
+                        </page>
+                        <page string="Plan Price Calculate Python Code">
+                            <div class="text-muted">
+                                <strong>Calculates the monthly price for a Flexible subscription plan based on a 12-month total price.</strong><br/>
+                                The annual price is converted to a weekly rate and then normalized to a 4-week month.<br/>
+                                Example:<br/>
+                                Plan = Flexible or billing_cycle == Monthly and Timeframe = flexible monthly, Pricing = €1,040<br/>
+                                → Weekly price = 1,040 ÷ 52 = €20.00<br/>
+                                → Monthly price = 20.00 × 4 = €80.00<br/>
+                            </div><br/>
+                            <field name="plan_price_calulate_python_code" widget="text" />
+                        </page>
+                        <page string="Store Plan Price Duration Calculate Python Code">
+                 
+                            <group>
+                                <field name="store_plan"/>
+                            </group>
+                         
+                            <div class="text-muted">
+                                <strong>Calculates the monthly or weekly price for Manual selected store plan Duration.</strong><br/>    
+                            </div><br/>
+                            <field name="store_rent_plan_python_code" widget="text" nolabel="1" />                        
+                          
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_scraper_field_mapping" model="ir.actions.act_window">
+        <field name="name">Competitor Data Mapping</field>
+        <field name="res_model">scraper.field.mapping</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

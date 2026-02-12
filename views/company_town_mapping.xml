@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_store_town_tree_mapping" model="ir.ui.view">
+        <field name="name">scraper.store.town.tree</field>
+        <field name="model">scraper.company.town.mapping</field>
+        <field name="arch" type="xml">
+            <tree string="Town List">
+                <field name="company_id"/>
+                <field name="town_ids"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_store_town_mapping_form" model="ir.ui.view">
+        <field name="name">scraper.store.town.mapping.form</field>
+        <field name="model">scraper.company.town.mapping</field>
+        <field name="arch" type="xml">
+            <form string="Company Town Mapping">
+                <sheet>
+                    <group>
+                        <field name="company_id"/>                        
+                    </group>
+                    <notebook>
+                         <page string="Town Names">
+                            <field name="town_ids">
+                                <tree editable="bottom">
+                                    <field name="scraper_store_ids" widget="many2many_tags"/>
+                                    <field name="name" optional="hide"/>
+                                    <field name="town_district_id"/>
+                                
+                                    <field name="town_id" />
+                                    <field name="address" />
+                                    <field name="zip_code" />                   
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_store_town_mapping" model="ir.actions.act_window">
+        <field name="name">Company Town/District Mapping</field>
+        <field name="res_model">scraper.company.town.mapping</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <record model="ir.module.category" id="module_category_scraper_menu">
+        <field name="name">Scraper Menu</field>           
+    </record>
+
+    <record id="group_enable_scraper_menu" model="res.groups">
+        <field name="name">Enable Scraper Menu</field>
+        <field name="category_id" ref="module_category_scraper_menu"/>
+    </record>
+</odoo>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_error_mail_config_form" model="ir.ui.view">
+        <field name="name">error.mail.config.form</field>
+        <field name="model">error.mail.config</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <field name="name" />
+                        <field name="email_from" />
+                        <field name="email_cc" />
+                        <field name="user_ids" widget="many2many_tags"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    <record id="view_error_mail_config_tree" model="ir.ui.view">
+        <field name="name">error.mail.config.tree</field>
+        <field name="model">error.mail.config</field>
+        <field name="arch" type="xml">
+            <tree string="Error Mail Configuration">   
+                <field name="name" />
+                <field name="email_from" />
+                <field name="email_cc" />             
+                <field name="user_ids" widget="many2many_tags" />
+                <field name="active" />
+            </tree>
+        </field>
+    </record>
+
+
+
+    <record id="action_error_mail_config" model="ir.actions.act_window">
+        <field name="name">Email Configuration</field>
+        <field name="res_model">error.mail.config</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>   

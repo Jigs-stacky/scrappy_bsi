@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_scraped_store_data_tree" model="ir.ui.view">
+        <field name="name">scraped.store.data.tree</field>
+        <field name="model">scraped.store.data</field>
+        <field name="arch" type="xml">
+            <tree string="Scraped Store Data">
+                <field name="name"/>
+                <field name="scrape_datetime"/>
+                <field name="log_id"/>
+                <field name="scraper_store_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_scraped_store_data_form" model="ir.ui.view">
+        <field name="name">scraped.store.data.form</field>
+        <field name="model">scraped.store.data</field>
+        <field name="arch" type="xml">
+            <form string="Scraped Store Data">
+                <header>
+                    <button name="import_from_logs" 
+                        string="Import from Logs" 
+                        type="object" 
+                        class="oe_highlight"
+                        invisible="data_type =='manual' "
+                        
+                        />
+
+                    <button name="update_all_location_details" 
+                        string="Update All Location Details" 
+                        type="object" 
+                        class="oe_highlight"
+                        invisible="data_type =='manual' "
+                        help="Click on update location in Ai address filter function run."
+                        />       
+
+                    <button name="update_all_bab_product_id_from_mapping" 
+                        string="Map All Products" 
+                        type="object" 
+                        class="oe_highlight"
+                        invisible="data_type =='manual' "
+                        help="Click on Map Product in Company Wise Bab product mapped."
+                        />
+                        
+                    <button name="update_all_bab_product_price_plan_from_mapping" 
+                            string="Sync All Plan Pricing" 
+                            type="object" 
+                            class="oe_highlight"
+                            invisible="data_type =='manual' "
+                            help="Click on Sync Plan Pricing in Product Recurring Value fetch."
+                        />
+
+                    <button name="all_store_plan_price_calculate"
+                            string="Calculate All per Day Amount"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="data_type =='manual' "
+                            help="Calculate per day amount based on monthly or weekly."
+                        />
+
+                    <button name="all_per_m2_monthly_price_calculate" 
+                        string="Calculate All Per m2 Monthly" 
+                        type="object" 
+                        class="oe_highlight"
+                        invisible="data_type =='manual' "
+                        help="Calculate per m2 for competitor product based and than per m2 and bab product aevarage price Calculate."
+                        />
+
+                    <button name="all_avg_price_manipulations" 
+                        string="Calculate All Per m2 and Average Price" 
+                        type="object" 
+                        class="oe_highlight"
+                        invisible="data_type =='manual' "
+                        help="Calculate per m2 for competitor product based and than per m2 and bab product aevarage price Calculate."
+                        />
+                    
+
+                    <field name="status" widget="statusbar"
+                           statusbar_visible="draft,completed,failed"/>
+                </header>
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="scrape_date"/>
+                        <field name="scrape_datetime"/>
+                        <field name="log_id" options="{'no_create': True}"/>
+                        <field name="data_type" invisible="1"  />
+                        <field name="scraper_store_id"/>
+                        <field name="store_plan" />
+                        <field name="store_request_id" />
+                        <field name="mapping_id"/>                        
+                    </group>
+
+                    <notebook>
+                        <page string="Store Data Lines">
+                            <field name="line_ids">
+                                <tree editable="bottom" default_order="bab_product_id desc">
+                                    
+                                    <button name="update_location_details" 
+                                        string="Update Location Details" 
+                                        type="object" 
+                                        class="oe_highlight"
+                                        invisible="data_type =='manual' "
+                                        help="Click on update location in Ai address filter function run."
+                                        />
+                                    
+                                    <button name="update_bab_product_id_from_mapping" 
+                                        string="Map Product" 
+                                        type="object" 
+                                        class="oe_highlight"
+                                        invisible="data_type =='manual' "
+                                        help="Click on Map Product in Company Wise Bab product mapped."
+                                    />
+
+
+                                    <button name="get_subscription_pricing_from_plan" 
+                                        string="Sync Plan Pricing" 
+                                        type="object" 
+                                        class="oe_highlight"
+                                        invisible="data_type =='manual' "
+                                        help="Click on Sync Plan Pricing in Product Recurring Value fetch."
+                                        />
+
+                                    <button name="store_plan_price_calculate"
+                                            string="Calculate Per Day Amount"
+                                            type="object"
+                                            class="oe_highlight"
+                                            invisible="data_type =='manual' "
+                                            help="Calculate per day amount based on monthly or weekly."
+                                        />
+
+
+                                    <button name="per_m2_monthly_price_calculate"
+                                            string="Calculate Per m2 and Average Price" 
+                                            type="object" 
+                                            class="oe_highlight"
+                                            invisible="data_type =='manual' "
+                                            help="Calculate per m2 monthly price competitor store product based and competitor store price."
+                                        />
+
+                                    <button name="avg_price_manipulations"
+                                        string="Calculate Per m2 and Average Price" 
+                                        type="object" 
+                                        class="oe_highlight"
+                                        invisible="data_type =='manual' "
+                                        help="Calculate per m2 for competitor store product based and than per m2 and bab product aevarage price Calculate."
+                                    />
+                                    
+
+                                    <field name="bab_company_id" optional="hide" />
+                                    <field name="bab_product_id"/>
+                                    <field name="currency_id" column_invisible="True" optional="hide"/>
+                                    <field name="bab_price" widget='monetary' options="{'currency_field': 'currency_id'}" />
+                                    <field name="scrappy_id" optional="hide" />
+                                    <field name="scraper_store_id" optional="hide"/> 
+                                    <field name="store_location_id" optional="hide"/>                                   
+                                    <field name="country_id"  optional="hide"/>
+                                    <field name="state_id" optional="hide" />
+                                    <field name="district_id" optional="hide" /> 
+                                    <field name="town_id" optional="hide" />
+                                    <field name="address" optional="hide" />
+                                    <field name="zip_code" optional="hide" />
+                                    <field name="data_type" column_invisible="1"/>
+                                    <field name="product_category" optional="hide"/>
+                                    <field name="competitor_product" />                                
+                                    <field name="old_competitor_price" optional="hide" />
+                                    <field name="competitor_price" />
+                                    <field name="per_day_amount" />
+                                    <field name="per_m2_monthly_value" />
+                                    <field name="per_meter_value"  />                                    
+                                    <field name="product_price" />
+                                    
+                                    <field name="timestamp" optional="hide"/>
+                                    <field name="plan" optional="hide"/>    
+                                    <field name="timeframe" optional="hide"/>                                
+                                    <field name="billing_cycle" optional="hide" />
+                                    <field name="payment_plan" optional="hide" />
+                                    <field name="week_plan_pricing"  optional="hide"/>                                 
+                                   
+
+                                    <field name="insurance" optional="hide"/>
+                                    <field name="discounted_per_day_amount" optional="hide"/>
+                                                                      
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Raw Data" >
+                            <field name="raw_response_data" nolabel="1" widget="json" options="{'expand': True}"/>
+                        </page>
+                        <page string="Error">
+                            <field name="error_message" widget="text" readonly="0"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_scraped_store_data_line_tree" model="ir.ui.view">
+        <field name="name">scraped.store.data.line.tree</field>
+        <field name="model">scraped.store.data.line</field>
+        <field name="arch" type="xml">
+            <tree string="Store Data Lines" default_order="competitor_product desc">
+                <field name="bab_company_id" optional="hide" />
+                <field name="bab_product_id" optional="hide"/>
+                <field name="scrappy_id" optional="hide" />
+                <field name="scraped_store_data_id" optional="hide"/>   
+                <field name="scraper_store_id" />
+                <field name="store_request_id" optional="hide" />
+                <field name="store_location_id" />
+                <field name="country_id"  optional="hide"/>
+                <field name="state_id" optional="hide" />
+                <field name="district_id" optional="hide" />      
+                <field name="town_id" optional="hide" />         
+                <field name="address" optional="hide" />
+                <field name="zip_code" optional="hide" />   
+                                    
+                  
+                <field name="product_category" optional="hide"/>                 
+                <field name="competitor_product" />
+                <field name="old_competitor_price" optional="hide" />
+                <field name="competitor_price" />
+                <field name="per_day_amount"  />
+                <field name="per_m2_monthly_value" />  
+                <field name="per_meter_value"  />                              
+                <field name="product_price"  avg="Average As Per Grouping"  />
+                
+                <field name="timestamp" optional="hide"/>
+                <field name="plan" optional="hide"/>
+                <field name="timeframe" optional="hide"/>               
+                <field name="billing_cycle" optional="hide" />
+                <field name="payment_plan" optional="hide" />
+                <field name="week_plan_pricing" optional="hide" />
+
+                <field name="insurance" optional="hide" />                
+                <field name="discounted_per_day_amount" optional="hide" />
+            </tree>
+        </field>
+    </record>
+
+        <record id="view_scraped_store_data_line_form" model="ir.ui.view">
+        <field name="name">scraped.store.data.line.form</field>
+        <field name="model">scraped.store.data.line</field>
+        <field name="arch" type="xml">
+            <form string="Store Data Lines">
+                <sheet>
+                    <group>
+                        <field name="bab_company_id"  />
+                        <field name="bab_product_id"/>
+                        
+                        <field name="scrappy_id"  />
+                        <field name="scraper_store_id"/>
+                        <field name="store_location_id"/>
+                        <field name="competitor_product"/>
+                        <field name="competitor_price"/>
+                        <field name="per_day_amount" />
+                        <field name="per_m2_monthly_value" />
+                        <field name="product_price" />
+                                               
+                        <field name="plan"/>
+                        <field name="timeframe" optional="hide"/>
+                        <field name="billing_cycle" optional="hide" />
+                        <field name="payment_plan" optional="hide" />
+
+                        <field name="timeframe"/>                  
+                        <field name="scraped_store_data_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_scraped_store_data" model="ir.actions.act_window">
+        <field name="name">Scraped Store Data</field>
+        <field name="res_model">scraped.store.data</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="view_scraped_store_data_line_search" model="ir.ui.view">
+        <field name="name">scraped.store.data.line.search</field>
+        <field name="model">scraped.store.data.line</field>
+            <field name="arch" type="xml">
+                <search string="Store Data Lines">
+
+                    <!-- Quick search fields -->
+                    <field name="scrappy_id" />
+                    <field name="store_location_id"/>
+                    <field name="scraper_store_id"/>
+                    <field name="bab_product_id"/>
+                    <field name="competitor_product"/>
+                    <field name="product_category"/>
+                    <field name="plan"/>
+                    <field name="timeframe"/>
+
+                    <filter
+                        string="Flexi Data"
+                        name="plan_timeframe_flexible_or_blank"
+                        domain="[
+                                    '|', '|',
+                                        '&amp;',
+                                            ('plan', '=', 'monthly'),
+                                            ('timeframe', '=', 'flexible monthly'),
+                                        '&amp;',
+                                            ('plan', '=', 'Flexible'),
+                                            ('timeframe', '=', '12 months'),
+                                        '&amp;',
+                                            ('plan', '=', ''),
+                                            ('timeframe', '=', '')
+                                ]"
+                    />
+
+
+                    <!-- Filters -->
+                    <separator/>
+
+                    <!-- Group By -->
+                    <group expand="1" string="Group By"> 
+                        <filter string="Districts"
+                                name="group_by_districts"
+                                context="{'group_by': 'district_id'}"/>      
+                        <filter string="Towns"
+                                name="group_by_compititor_town"
+                                context="{'group_by': 'town_id'}"/>
+                        <filter string="Store"
+                                name="group_by_store"
+                                context="{'group_by': 'scraper_store_id'}"/>            
+                        <filter string="Store Location"
+                                name="group_by_store_location"
+                                context="{'group_by': 'store_location_id'}"/>   
+                    </group>
+
+                </search>
+            </field>
+    </record>   
+
+
+    <record id="action_scraped_store_data_line" model="ir.actions.act_window">
+        <field name="name">Store Data Lines</field>
+        <field name="res_model">scraped.store.data.line</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{"search_default_group_by_districts" : 1,"search_default_group_by_compititor_town" : 1,"search_default_group_by_store" : 1,"search_default_group_by_store_location":1}</field>
+    </record>
+
+</odoo>

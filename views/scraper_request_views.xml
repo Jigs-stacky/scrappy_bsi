@@ -1,0 +1,82 @@
+<odoo>
+    <record id="view_scraper_request_tree" model="ir.ui.view">
+        <field name="name">scraper.request.tree</field>
+        <field name="model">scraper.request</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="scraper_store_id"/>
+                <field name="scraper_store_url"/>
+                <field name="request_id"/>
+                <field name="scheduler_run_date"/>
+                <field name="status"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_scraper_request_form" model="ir.ui.view">
+        <field name="name">scraper.request.form</field>
+        <field name="model">scraper.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_send_request"
+                            type="object"
+                            string="Generate Request"
+                            class="btn-primary"
+                            
+                            />
+                    <button name="scrapy_fetch_data"
+                            type="object"
+                            string="Scrappy Fetch Data"
+                            class="btn-primary"
+                            
+                            />
+                     <button name="scrapy_log_generate"
+                            type="object"
+                            string="Generate Log"
+                            class="btn-primary"
+
+                            /> 
+
+                    <field name="status" widget="statusbar"
+                           statusbar_visible="draft,inprogress,fetch_done,logged_data"/>
+                </header>
+
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <!-- <field name="data_type" /> -->
+                        <field name="request_id" readonly="1"/>
+                        <field name="scraper_store_id" />
+                        <field name="scraper_store_url"/>
+                        <field name="screepy_status"/>
+                        <field name="screepy_request_id" />                      
+                    </group>
+
+                    <group string="Tracking">
+                        <field name="request_generated_at" readonly="1"/>
+                        <field name="acknowledgment_at" readonly="1"/>
+                        <field name="response_received_at" readonly="1"/>
+                    </group>
+                     <notebook>
+                        <page string="Response JSON">
+                            <field name="response_json" widget="text"/>
+                        </page>
+                        <page string="Error">
+                            <field name="error_message" widget="text" readonly="0"/>
+                        </page>
+                    </notebook>
+
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_scraper_request" model="ir.actions.act_window">
+        <field name="name">Scraper Requests</field>
+        <field name="res_model">scraper.request</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+</odoo>

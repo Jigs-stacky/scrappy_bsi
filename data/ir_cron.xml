@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding='UTF-8'?>
+<odoo>
+    <data>
+        <record id="ir_cron_daily_api_call" model="ir.cron">
+            <field name="name">Scrapper Daily API Token fetch</field>
+            <field name="model_id" ref="bsi_competitor_scraper.model_scraper_request"/>
+            <field name="state">code</field>
+            <field name="code">model.cron_fetch_api_token()</field>
+            <field name="interval_number">1</field>
+            <field name="interval_type">days</field>
+            <field name="numbercall">-1</field>
+            <field name="active" eval="True" />
+            <field name="doall" eval="False"/>
+            <field name="nextcall" eval="(DateTime.now().replace(hour=3, minute=0) + timedelta(days=1)).strftime('%Y-%m-%d %H:%M:%S')" />
+        </record>
+
+        <record id="status_verified_action" model="ir.actions.server">
+            <field name="name">Status Verified</field>
+            <field name="type">ir.actions.server</field>
+            <field name="model_id" ref="bsi_competitor_scraper.model_scraper_store_town"/>
+            <field name="binding_model_id" ref="bsi_competitor_scraper.model_scraper_store_town"/>
+            <field name="binding_view_types">tree</field>
+            <field name="state">code</field>
+            <field name="code">action = records.status_assign()</field>           
+        </record>
+    </data>
+</odoo>

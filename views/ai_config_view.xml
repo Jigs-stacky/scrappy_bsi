@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_ai_form" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.inherit.auth.ldap</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="base_setup.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <block name="performance" position="after">
+                <block title="Ai Configurations" name="ai_config">
+                    <setting id="ai_setting_config">
+                        <field name="ai_key"/>
+                    </setting>
+                </block>
+                 <block title="Keywords Trend Api key" name="key_trends">
+                    <setting id="keywords_url_config">
+                        <field name="keyword_trend_url" />
+                    </setting><br/>
+                    <setting id="keywords_config">                       
+                        <field name="keywords_trend_api_key"/>
+                    </setting>
+                    
+                </block>
+            </block>
+        </field>
+    </record>
+</odoo>

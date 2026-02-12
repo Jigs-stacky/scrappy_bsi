@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_product_form_competitor_button" model="ir.ui.view">
+        <field name="name">product.product.form.competitor.button</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="arch" type="xml">
+
+            <!-- Add button in smart button box -->
+            <xpath expr="//div[@class='oe_button_box']" position="inside">
+                <button
+                    name="action_view_competitor_prices"
+                    type="object"
+                    class="oe_stat_button"
+                    icon="fa-database">
+                    <field name="id" invisible="1"/>
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="competitor_data_count"/>
+                        </span>
+                        <span class="o_stat_text">
+                            Scraped Data
+                        </span>
+                   </div>
+                </button>
+            </xpath>
+            <xpath expr="//field[@name='uom_po_id']" position="after" >
+                    <field name="product_avg_price" />
+            </xpath>
+
+        </field>
+    </record>
+</odoo>

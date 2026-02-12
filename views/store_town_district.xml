@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree View -->
+    <record id="view_store_district_tree" model="ir.ui.view">
+        <field name="name">store.district.tree</field>
+        <field name="model">scraper.store.district</field>
+        <field name="arch" type="xml">
+            <tree string="Districts">
+                <field name="name"/>
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form View -->
+    <record id="view_store_district_form" model="ir.ui.view">
+        <field name="name">store.district.form</field>
+        <field name="model">scraper.store.district</field>
+        <field name="arch" type="xml">
+            <form string="District">
+                <header>
+                      <button name="execute_all" type="object" string="Execute All Marketing Analysis" />
+                </header>
+                <sheet>
+                    <div class='oe_button_box'  name="button_box">
+                        <button
+                            name="action_view_towns"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-database">
+                            <div class="o_stat_info">    
+                                <span class="o_stat_value">
+                                    <field name="town_count"/>
+                                </span>                                                   
+                                <span class="o_stat_text">
+                                    Towns
+                                </span>
+                           </div>
+                        </button>
+                        <button
+                            name="action_view_competitor"
+                            type="object"
+                            class="oe_stat_button"
+                            icon="fa-database">
+                            <div class="o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="competition_store"/>
+                                </span>                                                          
+                                <span class="o_stat_text">
+                                    Compititors stores
+                                </span>
+                           </div>
+                        </button>
+                    </div>
+                   
+
+
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" placeholder="Enter district name"/>
+                        </h1>
+                    </div>
+                    <notebook>
+                        <page string="Towns">
+                            <field name="town_ids" widget="one2many">
+                                <tree editable="bottom">
+                                    <field name="town_id"  string="Towns"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Economic Indicators">
+                            <button name="economic_indicator_analysis" type="object" string="Execute" />
+                            <group>                
+                                <group string="Output">
+                                    <field name="average_income" />
+                                    <field name="average_commercial_rent_per_m2" />
+                                    <field name="warehouse_rent_per_m2" /> 
+                                    <field name="economic_output_reference" widget="text"/>                               
+                                </group>
+                                <group string="Input">
+                                    <field name="economic_indicator_prompt" widget="text" nolabel="0" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="housing Living Density">
+                            <button name="housing_living_density_analysis" type="object" string="Execute" />
+                            <group>                               
+                                <group string="Output"> 
+                                    <field name="number_of_households" />
+                                    <field name="average_household_size" />
+                                    <field name="average_home_size_m2" /> 
+                                    <field name="percentage_apartments" />                                
+                                    <field name="percentage_rented_homes" /> 
+                                    <field name="percentage_own_homes"/>
+                                    <field name="housing_density_output_reference" widget="text"/>
+                                </group>
+                                 <group string="Input">
+                                    <field name="housing_living_prompt" widget="text" nolabel="0" />
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Mobility Lifestyle Indicators">
+                            <button name="mobility_lifestyle_indicators_analysis" type="object" string="Execute" />
+                            <group>                               
+                                <group string="Output">
+                                    <field name="annual_move_rate" />
+                                    <field name="student_population_percentage" />
+                                    <field name="migrant_population_percentage" /> 
+                                    <field name="short_term_rentals_count" />   
+                                    <field name="mobility_output_reference" widget="text" />                            
+                                </group>
+                                 <group string="Input">
+                                    <field name="mobility_lifestyle_indicators_prompt" widget="text" nolabel="0" />
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Market Demand">
+                            <button name="market_demand_analysis" type="object" string="Execute" />
+                            <group>                               
+                                <group string="Output">                                  
+                                  
+                                    <field name="prompt_ids" widget="one2many">
+                                        <tree>
+                                            <field name="name" />
+                                            <field name="count" />
+                                        </tree>
+                                    </field>
+                                    <field name="demand_intent_level" />                          
+                                </group>
+                                 <group string="Input">
+                                    <field name="market_demand_prompt" widget="text" nolabel="0" />
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Competition Data">                          
+                            
+                            <button name="competition_data_analysis" type="object" string="Execute" />
+                         
+                            <group>                        
+                                <group string="Output">
+                                    <field name="number_of_competitors" />
+                                    <field name="competitor_locations" widget="text" />
+                                    <field name="average_rating" /> 
+                                    <field name="review_count" />  
+                                    <field name="price_range_min" />  
+                                    <field name="price_range_max"/>
+                                    <field name="price_currency" /> 
+                                    <field name="all_compititor_store_ai_avg_price" />
+                                    <field name="avg_scrappy_store_location_price" />
+                                    <field name="avg_price_scrapp_ai" />
+                                    <field name="compititor_output_reference" widget="text"/>                          
+                                </group>
+                                 <group string="Input">
+                                    <field name="competition_data_prompt" widget="text" nolabel="0" />
+                                </group>
+
+                            </group>
+                        </page>
+
+                        <page string="Scoring">
+                            <button name="scoring_analysis" type="object" string="Execute" />
+                            <group>                                
+                                <group string="Output">
+                                    <field name="demand_score" />
+                                    <field name="growth_score" />
+                                    <field name="affordability_score" />
+                                    <field name="competition_score" />
+                                    <field name="mobility_score" />
+                                    <!-- <field name="risk_score" /> -->
+                                </group>
+                                <group string="Input">
+                                    <field name="scoring_prompt" widget="text" nolabel="0" />
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Final Output">
+                            <button name="final_output_analysis" type="object" string="Execute" />
+                            <group>                               
+                                <group string="Output">
+                                    <field name="town_score" />
+                                    <field name="location_verdict" />
+                                    <field name="confidence_level" />                              
+                                </group>
+                                 <group string="Input">
+                                    <field name="final_output_prompt" widget="text" nolabel="0" />
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_store_district" model="ir.actions.act_window">
+        <field name="name">Districts</field>
+        <field name="res_model">scraper.store.district</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>
